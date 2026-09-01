@@ -1,3 +1,8 @@
+from datetime import datetime
+
+
+WEEK_DAYS = ["Понедельник", "Вторник", "Среда", "Четверг", "Пятница", "Субботы", "Воскресенье"]
+
 def format_time_block(time_slot: str, lessons: list[dict]) -> str:
     """Форматирует один временной блок (одна общая пара или 1-2 подгруппы)."""
     text = [f"⏱️ <code>{time_slot}</code>"]
@@ -15,10 +20,14 @@ def format_time_block(time_slot: str, lessons: list[dict]) -> str:
     return "\n".join(text)
 
 
-def create_schedule(data: list, date: str) -> str:
+def create_schedule(data: list, date: str | datetime) -> str:
+    date = datetime.strptime(date, "%Y-%m-%d")
+    string_date = date.strftime("%Y-%m-%d")
+    week_day = WEEK_DAYS[date.weekday()]
+    
     if not data:
-        return f"ℹ️ На <b>{date}</b> расписание отсутствует."
-
+        return f"ℹ️ На <b>{string_date} {week_day}</b> расписание отсутствует."
+    
     # 1. Группируем предметы по их времени (сохраняя порядок появления)
     grouped_by_time: dict[str, list[dict]] = {}
     for item in data:
@@ -33,5 +42,5 @@ def create_schedule(data: list, date: str) -> str:
         formatted_blocks.append(format_time_block(time_slot, lessons))
 
     # 3. Собираем итоговое сообщение
-    header = f"📅 <b>РАСПИСАНИЕ {date}</b>\n\n"
+    header = f"📅 <b>РАСПИСАНИЕ {string_date} {week_day}</b>\n\n"
     return header + "\n\n".join(formatted_blocks)

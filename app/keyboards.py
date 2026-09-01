@@ -45,18 +45,24 @@ def build_schedule_keyboard(group_id, course=None, date=None):
         date = datetime.today().date().strftime("%Y-%m-%d")
     
     kb = InlineKeyboardMarkup(inline_keyboard=[
-        # [
-        # InlineKeyboardButton(text="⚙️ Дополнительные возможности", callback_data=f"additional_features:{date}:{group_id}:{course}"),
-        # ],
         
         [
         InlineKeyboardButton(text="👥 Сменить группу", callback_data=f"select_course:{course}"),
         ],
 
         [
-        InlineKeyboardButton(text="◀️ Вчера", callback_data=f"schedule_keyboard:prev:{date}:{group_id}:{course}"),
-        InlineKeyboardButton(text="📅 Сегодня", callback_data=f"schedule_keyboard:today:{date}:{group_id}:{course}"),
-        InlineKeyboardButton(text="Завтра ▶️", callback_data=f"schedule_keyboard:next:{date}:{group_id}:{course}"),
+        InlineKeyboardButton(
+            text="◀️ Вчера",
+            callback_data=f"schedule_keyboard:prev:{date}:{group_id}:{course}"
+            ),
+        InlineKeyboardButton(
+            text="📅 Сегодня",
+            callback_data=f"schedule_keyboard:today:{date}:{group_id}:{course}"
+            ),
+        InlineKeyboardButton(
+            text="Завтра ▶️",
+            callback_data=f"schedule_keyboard:next:{date}:{group_id}:{course}"
+            ),
         ]
     ])
 
