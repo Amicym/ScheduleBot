@@ -47,23 +47,38 @@ def build_schedule_keyboard(group_id, course=None, date=None):
     kb = InlineKeyboardMarkup(inline_keyboard=[
         
         [
-        InlineKeyboardButton(text="👥 Сменить группу", callback_data=f"select_course:{course}"),
+            InlineKeyboardButton(
+                text="👥 Сменить группу",
+                callback_data=f"select_course:{course}"
+            ),
         ],
 
         [
-        InlineKeyboardButton(
-            text="◀️ Вчера",
-            callback_data=f"schedule_keyboard:prev:{date}:{group_id}:{course}"
+            InlineKeyboardButton(
+                text="◀️ День",
+                callback_data=f"schedule_keyboard:prev:{date}:{group_id}:{course}"
             ),
-        InlineKeyboardButton(
-            text="📅 Сегодня",
-            callback_data=f"schedule_keyboard:today:{date}:{group_id}:{course}"
+            InlineKeyboardButton(
+                text="📅 Сегодня",
+                callback_data=f"schedule_keyboard:today:{date}:{group_id}:{course}"
             ),
-        InlineKeyboardButton(
-            text="Завтра ▶️",
-            callback_data=f"schedule_keyboard:next:{date}:{group_id}:{course}"
+            InlineKeyboardButton(
+                text="День ▶️",
+                callback_data=f"schedule_keyboard:next:{date}:{group_id}:{course}"
             ),
-        ]
+        ],
+
+        [
+            InlineKeyboardButton(
+                text="◀️ Неделя",
+                callback_data=f"schedule_keyboard:prevweek:{date}:{group_id}:{course}"
+            ),
+
+            InlineKeyboardButton(
+                text="Неделя ▶️",
+                callback_data=f"schedule_keyboard:nextweek:{date}:{group_id}:{course}"
+            ),
+        ],
     ])
 
     return kb

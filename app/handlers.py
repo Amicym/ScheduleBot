@@ -22,8 +22,8 @@ async def show_schedule(callback: CallbackQuery):
     group = split_callback_data[3]
     course = split_callback_data[4]
 
-    if select in {"next", "prev", "today"}:
-        shifts = {"next": 1, "prev": -1}
+    if select in {"next", "prev", "today", "prevweek", "nextweek"}:
+        shifts = {"next": 1, "prev": -1, "prevweek": -7, "nextweek": 7}
         if select != "today":
             calculated_date = datetime.strptime(date, "%Y-%m-%d") + timedelta(days=shifts[select])
             current_date = calculated_date.strftime("%Y-%m-%d")
