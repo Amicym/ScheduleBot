@@ -8,12 +8,11 @@ from aiogram.filters import CommandStart, Command
 from aiogram.types import Message, CallbackQuery
 from aiogram.exceptions import TelegramBadRequest
 
-from aiogram3_calendar import SimpleCalendar, simple_cal_callback
 
 rt = Router()
 
 @rt.callback_query(F.data.startswith("schedule_keyboard:"))
-async def show_schedule(callback: CallbackQuery):
+async def show_schedule(callback: CallbackQuery, session):
     await callback.answer(text="🚀 Загружаю расписание")
     split_callback_data = callback.data.split(":")
 
@@ -30,7 +29,7 @@ async def show_schedule(callback: CallbackQuery):
         else:
             current_date = datetime.today().strftime("%Y-%m-%d")
 
-    raw_data = await api.fetch_api(id_=group, date=current_date)
+    raw_data = await api.fetch_api(session, id_=group, date=current_date)
 
     schedule = app.format.create_schedule(raw_data, date=current_date)
     schedule_keyboard = kb.build_schedule_keyboard(group_id=group, date=current_date, course=course)
@@ -58,14 +57,14 @@ async def show_additional_features(callback: CallbackQuery):
     )
 
 @rt.callback_query(F.data.startswith("select_group:"))
-async def group_selection(callback: CallbackQuery):
+async def group_selection(callback: CallbackQuery, session):
     await callback.answer(text="🚀 Загружаю расписание")
     today = datetime.now().date()
 
     group_id = callback.data.split(":")[1]
     course = callback.data.split(":")[2]
 
-    data = await api.fetch_api(group_id)
+    data = await api.fetch_api(session, group_id)
 
     schedule = app.format.create_schedule(data, date=today.strftime("%Y-%m-%d"))
 
@@ -78,10 +77,10 @@ async def group_selection(callback: CallbackQuery):
     )
 
 @rt.callback_query(F.data.startswith("select_course:"))
-async def course_selection(callback: CallbackQuery):
+async def course_selection(callback: CallbackQuery, session):
     await callback.answer(text="🚀 Загружаю группы")
     course = callback.data.split(":")[1][0]
-    data = await api.fetch_api()
+    data = await api.fetch_api(session)
     
     group_keyboard = kb.build_groups_keyboard(data, course)
 
