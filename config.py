@@ -1,7 +1,7 @@
 import os, pathlib
 
 def get_token():
-    env_path = pathlib.Path("~/Bot_raspisanie/.env").expanduser()
+    env_path = pathlib.Path(__file__).parent / ".env"
 
     if env_path.exists():
         with open(env_path, mode="r", encoding="utf-8") as f:
