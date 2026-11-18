@@ -16,10 +16,15 @@ async def main():
     session = AsyncSession(impersonate='chrome')
     dp.workflow_data["session"] = session
 
-    try:
-        await dp.start_polling(bot)
-    finally:
-        await session.close()
+    while True:
+        try:
+            await dp.start_polling(bot)
+        except Exception:
+            await asyncio.sleep(5)
+        else:
+            break
+        
+    await session.close()
 
 if __name__ == "__main__":
     logging.basicConfig(level=logging.INFO)
